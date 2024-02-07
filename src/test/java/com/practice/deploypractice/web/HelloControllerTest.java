@@ -1,8 +1,10 @@
 package com.practice.deploypractice.web;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
@@ -41,5 +43,22 @@ public class HelloControllerTest {
                 // 응답 본문의 내용을 검증.
                 // Controller에서 "hello"를 리턴하기 때문에 이 값이 맞는지 검증.
                 .andExpect(content().string(hello));
+    }
+
+    @Test
+    public void helloDto가_리턴된다() throws Exception {
+        String name = "hello";
+        int amount = 1000;
+
+        mvc.perform(
+                get("/hello/dto")
+                        // API 테스트할 때 사용될 요청 파라미터를 설정. (단, 값은 String만 허용한다.)
+                        .param("name", name)
+                        .param("amount", String.valueOf(amount))
+        ).andExpect(status().isOk())
+                // jsonPath: JSON 응답값을 필드별로 검증할 수 있는 메소드.
+                // $를 기준으로 필드명을 명시.
+        .andExpect(jsonPath("$.name", is(name)))
+        .andExpect(jsonPath("$.amount", is(amount)));
     }
 }
