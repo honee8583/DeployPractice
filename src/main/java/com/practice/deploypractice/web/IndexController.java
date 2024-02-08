@@ -14,4 +14,9 @@ public class IndexController {
         // ViewResolver가 처리.
         return "index";
     }
+
+    @GetMapping("/post/save")
+    public String postSave() {
+        return "post-save";
+    }
 }
