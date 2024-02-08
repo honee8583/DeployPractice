@@ -1,7 +1,9 @@
 package com.practice.deploypractice.domain.posts;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.After;
 import org.junit.Test;
@@ -43,5 +45,27 @@ public class PostRepositoryTest {
         Post post = posts.get(0);
         assertEquals(post.getTitle(), title);
         assertEquals(post.getContent(), content);
+    }
+
+    @Test
+    public void BaseTimeEntity_등록() {
+        // given
+        LocalDateTime now = LocalDateTime.of(2024, 2, 7, 0, 0, 0);
+        postRepository.save(Post.builder()
+                .title("title")
+                .content("content")
+                .author("author")
+                .build());
+
+        // when
+        List<Post> posts = postRepository.findAll();
+
+        // then
+        Post post = posts.get(0);
+
+        System.out.println(">>>> creatDate=" + post.getCreatedDate() + ", modifiedDate=" + post.getModifiedDate());
+
+        assertThat(post.getCreatedDate()).isAfter(now);
+        assertThat(post.getModifiedDate()).isAfter(now);
     }
 }

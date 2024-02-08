@@ -1,5 +1,6 @@
 package com.practice.deploypractice.domain.posts;
 
+import com.practice.deploypractice.domain.BaseTimeEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity // 기본값으로 클래스의 카멜케이스 이름을 언더스코어 네이밍(_)으로 테이블 이름을 매칭한다. (ex: SalesManager -> sales_manager)
-public class Post {
+public class Post extends BaseTimeEntity {
     // Entity 클래스에는 절대 Setter 메소드를 만들지 않는다.
     // 해당 필드의 값 변경이 필요하다면 명확히 그 목적과 의도를 나타낼 수 있는 메소드를 추가해야 한다.
     // 기본적인 구조는 생성자를 통해 최종값을 채운 후 DB에 삽입하는 것이며, 값 변경이 필요한 경우 해당 이벤트에 맞는
