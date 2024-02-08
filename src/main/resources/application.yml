@@ -8,3 +8,8 @@ spring:
 
   datasource:
     url: jdbc:h2:mem:testdb
+
+server:
+  servlet:
+    encoding:
+      force-response: true
