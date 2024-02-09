@@ -7,10 +7,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.practice.deploypractice.config.auth.SecurityConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,10 +22,18 @@ import org.springframework.test.web.servlet.MockMvc;
 // 스프링부트 테스트와 JUnit 사이에 연결자 역할을 한다.
 @RunWith(SpringRunner.class)
 // Web(Spring MVC)에 집중할 수 있는 어노테이션
-// (선언할 경우 @Controller, @ControllerAdvice등을 사용할 수 있다.
+// (선언할 경우 WebSecurityConfigurerAdapter, WebMvcConfigurer, @Controller, @ControllerAdvice등을 읽을 수 있다.
 // 단, @Service, @Component, @Repository 등은 사용불가.) 여기서는 컨트롤러만 사용하기 때문에 사용.
-@WebMvcTest(controllers = HelloController.class)
+// SecurityConfig를 읽더라도 내부의 CustomOAuth2UserService는 읽을 수 없기 때문에 스캔대상에서 SecurityConfig를 제거.
+@WebMvcTest(controllers = HelloController.class,
+    excludeFilters = {
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+    }
+)
 public class HelloControllerTest {
+    // !! @EnableJpaAuditing이 @SpringBootApplication과 함께 있을 경우 @WebMvcTest에서도 @EnableJpaAuditing을 읽게됨.
+    // @EnableJpaAuditing은 최소 하나의 @Entity 클래스가 필요하지만 @WebMvcTest에서는 읽지를 못함.
+    // 따라서 둘을 분리해줘야 함.
 
     // 웹 API를 테스트할 때 사용.
     // 스프링 MVC 테스트의 시작점.
@@ -29,6 +41,7 @@ public class HelloControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @WithMockUser(roles = "USER")
     @Test
     public void hello가_리턴된다() throws Exception {
         String hello = "hello";
@@ -45,6 +58,7 @@ public class HelloControllerTest {
                 .andExpect(content().string(hello));
     }
 
+    @WithMockUser(roles = "USER")
     @Test
     public void helloDto가_리턴된다() throws Exception {
         String name = "hello";
