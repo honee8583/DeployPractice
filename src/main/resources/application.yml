@@ -12,6 +12,10 @@ spring:
   profiles:
     include: oauth
 
+  # 세션저장소를 JDBC로 선택
+  session:
+    store-type: jdbc
+
 server:
   servlet:
     encoding:
