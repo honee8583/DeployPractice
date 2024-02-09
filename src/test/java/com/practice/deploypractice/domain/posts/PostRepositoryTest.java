@@ -9,11 +9,12 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest // 별다른 설정이 없을 경우 H2 데이터베이스를 자동으로 수행.
+@DataJpaTest    // 내장 데이터베이스를 사용하고 JPA와 관련된 빈만 로드.
+//@SpringBootTest // 별다른 설정이 없을 경우 H2 데이터베이스를 자동으로 수행.
 public class PostRepositoryTest {
 
     @Autowired
@@ -67,5 +68,29 @@ public class PostRepositoryTest {
 
         assertThat(post.getCreatedDate()).isAfter(now);
         assertThat(post.getModifiedDate()).isAfter(now);
+    }
+
+    @Test
+    public void findAllDesc_테스트() {
+        // given
+        Post savedPost1 = postRepository.save(postRepository.save(Post.builder()
+                .title("title1")
+                .content("content1")
+                .author("author1")
+                .build()));
+
+        Post savedPost2 = postRepository.save(postRepository.save(Post.builder()
+                .title("title2")
+                .content("content2")
+                .author("author2")
+                .build()));
+
+        // when
+        List<Post> posts = postRepository.findAllDesc();
+
+        // then
+        assertThat(posts).isNotEmpty();
+        assertThat(posts.size()).isEqualTo(2);
+        assertThat(posts).contains(savedPost1, savedPost2);
     }
 }
