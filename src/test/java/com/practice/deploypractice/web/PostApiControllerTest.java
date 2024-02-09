@@ -21,6 +21,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @RunWith(SpringRunner.class)
 // @WebMvcTest의 경우 JPA기능이 작동하지 않고 Controller와 ControllerAdvice 등 외부 연동과 관련된 부분만 활성화되므로 여기서는 사용 x.
@@ -129,5 +130,28 @@ public class PostApiControllerTest {
         assertThat(responseEntity.getBody().getTitle()).isEqualTo(title);
         assertThat(responseEntity.getBody().getContent()).isEqualTo(content);
         assertThat(responseEntity.getBody().getAuthor()).isEqualTo(author);
+    }
+
+    @Test
+    public void Post_삭제된다() {
+        // given
+        Post savedPost = postRepository.save(Post.builder()
+                .title("title")
+                .content("content")
+                .author("author")
+                .build());
+
+        Long deleteId = savedPost.getId();
+
+        String url = "http://localhost:" + port + "/api/v1/post/" + deleteId;
+
+        HttpEntity<Long> requestEntity = new HttpEntity<>(deleteId);
+
+        // when
+        ResponseEntity<Long> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, Long.class);
+
+        // then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isEqualTo(deleteId);
     }
 }
