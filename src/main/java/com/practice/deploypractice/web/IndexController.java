@@ -1,9 +1,9 @@
 package com.practice.deploypractice.web;
 
+import com.practice.deploypractice.config.auth.LoginUser;
 import com.practice.deploypractice.config.auth.dto.SessionUser;
 import com.practice.deploypractice.service.post.PostService;
 import com.practice.deploypractice.web.dto.PostResponseDto;
-import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class IndexController {
     private final PostService postService;
-    private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postService.findAllDesc());
-
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
         if (user != null) {
             model.addAttribute("userName", user.getName());
