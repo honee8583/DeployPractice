@@ -44,7 +44,7 @@ public class HelloControllerTest {
     @WithMockUser(roles = "USER")
     @Test
     public void hello가_리턴된다() throws Exception {
-        String hello = "hello";
+        String hello = "CI/CD TEST";
 
         // MockMvc를 통해 /hello 주소로 HTTP GET 요청 수행.
         // 여러 검증을 이어서 선언 가능.
