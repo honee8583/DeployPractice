@@ -70,22 +70,22 @@ Public으로 설정하지 않더라도 우리는 IAM 사용자를 설정해 발�
 
 AWS의 CodeDeploy를 사용하기 전에 EC2가 Code Deploy를 연동 받을 수 있게 IAM 역할을 생성한다.
 
-![](images/IAM 설정 1.png)
+![](images/IAM설정1.png)
 IAM의 사용자 추가로 들어가 사용자 이름을 작성한다.
 
 <br/>
 
-![](images/IAM 설정 2.png)
+![](images/IAM설정2.png)
 직접 정책 연결을 선택해 연결할 권한을 직접 지정한다.
 
 <br/>
 
-![](images/IAM 설정 3.png)
+![](images/IAM설정3.png)
 **AmazonS3FullAccess**와 **AWSCodeDeployFullAccess** 권한 총 2개를 추가한다.
 
 <br/>
 
-![](images/IAM 설정 4.png)
+![](images/IAM설정4.png)
 추가된 권한들을 확인하고 태그명을 Name을 사용하고 본인이 인지 가능한 정도의 이름으로 값을 지정한다.
 
 사용자 생성 버튼으로 생성을 완료한다.
@@ -94,23 +94,23 @@ IAM의 사용자 추가로 들어가 사용자 이름을 작성한다.
 
 ### IAM 액세스키와 비밀 액세스키 발급받기
 
-![](images/액세스키 1.png)
+![](images/액세스키1.png)
 생성한 사용자로 들어가 ‘액세스 키 만들기’버튼을 선택한다.
 
 <br/>
 
-![](images/IAM 액세스키 2.png)
+![](images/IAM액세스키2.png)
 
 ‘AWS 외부에서 실행되는 애플리케이션’ 옵션을 선택한다.
 
 <br/>
 
-![](images/액세스 키 만들기 버튼.png)
+![](images/액세스키만들기버튼.png)
 액세스키 만들기 버튼을 통해 액세스키를 발급받는다.
 
 <br/>
 
-![](images/액세스키 발급 완료.png)
+![](images/액세스키발급완료.png)
 발급이 완료되면 액세스 키와 비밀 액세스 키를 발급 받게 되고 이 페이지에서 나가게 되면 비밀 액세스키를 확인할 수 없게 되므로 따로 저장을 해두거나 .csv 파일 다운받아 관리한다.
 
 <br/>
@@ -119,7 +119,7 @@ IAM의 사용자 추가로 들어가 사용자 이름을 작성한다.
 
 Github 저장소의 Settings로 들어가 Secrets and variables 탭의 Actions 탭으로 들어간다.
 
-![](images/깃허브 액션에 액세스 키 등록.png)
+![](images/깃허브액션에액세스키등록.png)
 New repository secret 버튼을 눌러 AWS_ACCESS_KEY_ID, AWS_PRIVATE_ACCESS_KEY 이름으로 각각의 값을 저장해준다. (다른 이름으로 선택 가능)
 
 <br/>
@@ -128,31 +128,31 @@ New repository secret 버튼을 눌러 AWS_ACCESS_KEY_ID, AWS_PRIVATE_ACCESS_KEY
 
 EC2 인스턴스가 S3, CodeDeploy에 접근해 배포할 파일을 받아오기 위한 권한을 부여할 IAM 역할을 생성해야 한다.
 
-![](images/IAM 역할 생성 0.png)
+![](images/IAM역할생성0.png)
 엔터티 유형으로 AWS 서비스, 사용사례로 EC2를 지정한다.
 
 <br/>
 
-![](images/IAM 역할 생성 2.png)
+![](images/IAM역할생성2.png)
 
-![](images/IAM 역할 생성 3.png)
+![](images/IAM역할생성3.png)
 권한으로 AmazonS3FullAccess, AWSCodeDeployFullAccess 권한을 추가해준다.
 
 <br/>
 
-![](images/IAM 역할 생성 완료.png)
+![](images/IAM역할생성완료.png)
 마지막으로 역할 이름을 지정해 역할 생성을 완료한다.
 
 <br/>
 
 ### EC2에 역할 적용
 
-![](images/EC2 역할 수정.png)
+![](images/EC2역할수정.png)
 EC2 페이지로 들어가 인스턴스를 선택해 보안 → IAM 역할 수정 버튼을 선택한다.
 
 <br/>
 
-![](images/EC2 역할 수정 완료.png)
+![](images/EC2역할수정완료.png)
 전에 생성한 IAM 역할 이름을 선택해 IAM 역할을 업데이트한다.
 
 <br/>
@@ -210,42 +210,42 @@ $ sudo service codedeploy-agent status
 
 ## CodeDeploy를 위한 IAM 역할 생성
 
-![](images/CodeDeploy를 위한 IAM 역할 생성1.png)
+![](images/CodeDeploy를위한IAM역할생성1.png)
 사용사례를 CodeDeploy로 설정해 역할 생성을 시작한다.
 
 <br/>
 
-![](images/IAM 역할 생성 1.png)
+![](images/IAM역할생성1.png)
 AWSCodeDeployRole 권한을 추가 및 역할의 이름을 생성해 역할 생성을 마무리한다.
 
 <br/>
 
 ## CodeDeploy 애플리케이션 생성
 
-![](images/CodeDeploy 애플리케이션 생성 1.png)
+![](images/CodeDeploy애플리케이션생성1.png)
 컴퓨팅 플랫폼을 **EC2/온프레미스**로 설정하고 애플리케이션을 생성한다.
 
 <br/>
 
-![](images/CodeDeploy 애플리케이션 생성2.png)
+![](images/CodeDeploy애플리케이션생성2.png)
 생성한 애플리케이션 내에 배포 그룹을 생성한다.
 
 <br/>
 
-![](images/CodeDeploy 애플리케이션 생성3.png)
+![](images/CodeDeploy애플리케이션생성3.png)
 배포 그룹 이름을 지정하고 서비스 역할로 전에 생성한 CodeDeploy용 IAM 역할 이름을 지정해준다.
 
 <br/>
 
-![](images/CodeDeploy 애플리케이션 생성4.png)
+![](images/CodeDeploy애플리케이션생성4.png)
 
-![](images/CodeDeploy 애플리케이션 생성5.png)
+![](images/CodeDeploy애플리케이션생성5.png)
 애플리케이션 배포 방법으로 현재 위치, 환경 구성으로 Amazon EC2 인스턴스를 선택한다.
 환경구성의 키로 Name, 값으로 EC2 인스턴스를 선택해준다.
 
 <br/>
 
-![](images/CodeDeploy 애플리케이션 생성6.png)
+![](images/CodeDeploy애플리케이션생성6.png)
 배포 설정으로 CodeDeployDefault.AllAtOnce 선택 및 로드 밸런싱 활성화를 선택 해제해준다.
 
 <br/>
