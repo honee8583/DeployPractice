@@ -274,7 +274,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      ...
+      # ... 생략
 			
 			# -------- 추가 ---------
       - name: Make Zip File
