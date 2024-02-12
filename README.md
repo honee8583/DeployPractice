@@ -276,7 +276,7 @@ jobs:
       
       # ... 생략
 			
-			# -------- 추가 ---------
+	  # -------- 추가 ---------
       - name: Make Zip File
         run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
